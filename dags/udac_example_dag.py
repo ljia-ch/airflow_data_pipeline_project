@@ -10,8 +10,12 @@ from operators.load_dimension import LoadDimensionOperator
 from operators.data_quality import DataQualityOperator
 from helpers import SqlQueries
 
-# AWS_KEY = os.environ.get('AWS_KEY')
-# AWS_SECRET = os.environ.get('AWS_SECRET')
+import configparser
+config = configparser.ConfigParser()
+config.read_file(open('dwh.cfg'))
+
+AWS_KEY = config.get('AWS_KEY')
+AWS_SECRET = config.get('AWS_SECRET')
 
 default_args = {
     'owner': 'udacity',
