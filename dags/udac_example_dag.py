@@ -12,10 +12,10 @@ from helpers import SqlQueries
 
 import configparser
 config = configparser.ConfigParser()
-config.read_file(open('dwh.cfg'))
+config.read_file(open('dags/dwh.cfg'))
 
-AWS_KEY = config.get('AWS_KEY')
-AWS_SECRET = config.get('AWS_SECRET')
+AWS_KEY = config.get('AWS','KEY')
+AWS_SECRET = config.get('AWS','SECRET')
 
 default_args = {
     'owner': 'udacity',
