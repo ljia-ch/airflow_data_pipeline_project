@@ -15,3 +15,10 @@ We have provided you with a project template that takes care of all the imports 
 You'll be provided with a helpers class that contains all the SQL transformations. Thus, you won't need to write the ETL yourselves, but you'll need to execute it with your custom operators.
 
 ![dag lineage](image/dag_lineage.png)
+
+### Data Structure 
+Staging Tables <br>
+![tables](image/staging_tables.png)
+
+Data warehouse <br>
+![tables](image/Erd_dwh.png)
