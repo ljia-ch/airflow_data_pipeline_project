@@ -38,7 +38,7 @@ class LoadFactOperator(BaseOperator):
         self.log.info("Prepare load data from staging table to {} fact table".format(self.target_table))
         redshift_hook = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        self.log.info("Loading data into fact and dimension tables")
+        self.log.info("Loading data into fact tables - songplays")
         table_insert_sql = """
             INSERT INTO {self.target_table}
             {self.query_name}
