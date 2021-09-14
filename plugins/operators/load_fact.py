@@ -12,11 +12,7 @@ class LoadFactOperator(BaseOperator):
     redshift_conn_id:    AWS redshift connection id 
     target_table:        Fact table name
     query_name:          Query name to use in sql_queries
-    insert_mode:         Defined how to insert data in target table. 
-                         (
-                         append(default): append on top of existing data
-                         truncate_insert: delete current and insert new data
-                         )
+
     
     """
 
@@ -27,15 +23,12 @@ class LoadFactOperator(BaseOperator):
                  redshift_conn_id = "",
                  target_table = "",
                  query_name = "",
-                 insert_mode = "append",
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
         self.redshift_conn_id = redshift_conn_id
         self.target_table = target_table
-        self.target_columns = target_columns
         self.query_name = query_name
-        self.insert_mode = insert_mode
 
     def execute(self, context):
         
@@ -45,7 +38,7 @@ class LoadFactOperator(BaseOperator):
         self.log.info("Prepare load data from staging table to {} fact table".format(self.target_table))
         redshift_hook = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        self.log.info("Loading data into fact table")
+        self.log.info("Loading data into fact and dimension tables")
         table_insert_sql = """
             INSERT INTO {self.target_table}
             {self.query_name}
