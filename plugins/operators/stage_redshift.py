@@ -19,6 +19,7 @@ class StageToRedshiftOperator(BaseOperator):
     
     """
     ui_color = '#358140'
+    
     copy_sql = """
     COPY {}
     FROM '{}'
