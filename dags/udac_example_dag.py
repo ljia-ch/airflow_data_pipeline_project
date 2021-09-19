@@ -37,7 +37,7 @@ dag = DAG('sparkify_airflow_proj_dag',
 
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
 
-create_tables=PostgresOperator(
+create_tables = PostgresOperator(
     task_id="create_tables",
     dag=dag,
     postgres_conn_id="redshift",
@@ -46,7 +46,16 @@ create_tables=PostgresOperator(
 
 stage_events_to_redshift = StageToRedshiftOperator(
     task_id='Stage_events',
+    dag=dag,
+    postgres_conn_id='redshift',
+    aws_credentials_id='aws_credentials',
+    table='staging_events',
+    s3_bucket='udacity-dend',
+    s3_key='log_data', 
+    copy_json_option='s3://udacity-dend/log_json_path.json', # json path file for map JSON keys in COPY SQL
+    region='us-west-2',
     dag=dag
+    
 )
 
 stage_songs_to_redshift = StageToRedshiftOperator(
