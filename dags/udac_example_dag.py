@@ -20,17 +20,29 @@ AWS_KEY = config.get('AWS','KEY')
 AWS_SECRET = config.get('AWS','SECRET')
 
 default_args = {
-    'owner': 'udacity',
+    'owner': 'ljia-ch',
+    'denpends_on_past': False,
+    'email':['ljia24338@gmail.com']
+    'email_on_failure'：False,
     'start_date': datetime(2019, 1, 12),
+    'retries': 3,
+    'retry_delay': timedelta(minutes=5)
 }
 
-dag = DAG('udac_example_dag',
+dag = DAG('sparkify_airflow_proj_dag',
           default_args=default_args,
-          description='Load and transform data in Redshift with Airflow',
+          description='Load data from S3 and transform in Redshift with Airflow',
           schedule_interval='0 * * * *'
         )
 
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
+
+create_tables=PostgresOperator(
+    task_id="create_tables",
+    dag=dag,
+    postgres_conn_id="redshift",
+    sql="create_tables.sql"
+)
 
 stage_events_to_redshift = StageToRedshiftOperator(
     task_id='Stage_events',
