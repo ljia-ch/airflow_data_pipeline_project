@@ -10,7 +10,7 @@ class LoadFactOperator(BaseOperator):
     
     Parameters
     redshift_conn_id:    AWS redshift connection id 
-    target_table:        Fact table name
+    table:        Fact table name
     query_name:          Query name to use in sql_queries
 
     
@@ -21,13 +21,13 @@ class LoadFactOperator(BaseOperator):
     @apply_defaults
     def __init__(self,
                  redshift_conn_id = "",
-                 target_table = "",
+                 table = "",
                  query_name = "",
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
         self.redshift_conn_id = redshift_conn_id
-        self.target_table = target_table
+        self.table = table
         self.query_name = query_name
 
     def execute(self, context):

@@ -46,8 +46,7 @@ create_tables = PostgresOperator(
 
 stage_events_to_redshift = StageToRedshiftOperator(
     task_id='Stage_events',
-    dag=dag,
-    postgres_conn_id='redshift',
+    redshift_conn_id='redshift',
     aws_credentials_id='aws_credentials',
     table='staging_events',
     s3_bucket='udacity-dend',
@@ -60,11 +59,21 @@ stage_events_to_redshift = StageToRedshiftOperator(
 
 stage_songs_to_redshift = StageToRedshiftOperator(
     task_id='Stage_songs',
+    redshift_conn_id='redshift',
+    aws_credentials_id='aws_credentials',
+    table='staging_events',
+    s3_bucket='udacity-dend',
+    s3_key='log_data',
+    copy_json_option='s3://udacity-dend/log_json_path.json',
+    region='us-west-2',
     dag=dag
 )
 
 load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
+    redshift_conn_id='redshift',
+    table='songplays',
+    select
     dag=dag
 )
 
