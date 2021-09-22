@@ -89,22 +89,31 @@ load_song_dimension_table = LoadDimensionOperator(
     task_id='Load_song_dim_table',
     redshift_conn_id='redshift',
     table='songs',
-    select_sql=SqlQueries.song_table_insert,
+    sql_name=SqlQueries.song_table_insert,
     dag=dag
 )
 
 load_artist_dimension_table = LoadDimensionOperator(
     task_id='Load_artist_dim_table',
+    redshift_conn_id='redshift',
+    table='artists',
+    sql_name=SqlQueries.artist_table_insert,
     dag=dag
 )
 
 load_time_dimension_table = LoadDimensionOperator(
     task_id='Load_time_dim_table',
+    redshift_conn_id='redshift',
+    table='time',
+    sql_name=SqlQueries.time_table_insert,
     dag=dag
 )
 
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
+    redshift_conn_id='redshift',
+    test_sql='select count(*) from songs where songid is null'
+    expected_result=0,
     dag=dag
 )
 
