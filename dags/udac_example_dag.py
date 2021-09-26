@@ -112,7 +112,7 @@ load_time_dimension_table = LoadDimensionOperator(
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     redshift_conn_id='redshift',
-    test_sql='select count(*) from songs where songid is null'
+    test_sql='select count(*) from songs where songid is null',
     expected_result=0,
     dag=dag
 )
