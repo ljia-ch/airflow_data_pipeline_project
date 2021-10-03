@@ -109,10 +109,34 @@ load_time_dimension_table = LoadDimensionOperator(
     dag=dag
 )
 
-run_quality_checks = DataQualityOperator(
+run_song_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     redshift_conn_id='redshift',
     test_sql='select count(*) from songs where songid is null',
+    expected_result=0,
+    dag=dag
+)
+
+run_user_quality_checks = DataQualityOperator(
+    task_id='Run_data_quality_checks',
+    redshift_conn_id='redshift',
+    test_sql='select count(*) from users where userid is null',
+    expected_result=0,
+    dag=dag
+)
+
+run_artist_quality_checks = DataQualityOperator(
+    task_id='Run_data_quality_checks',
+    redshift_conn_id='redshift',
+    test_sql='select count(*) from artists where artistid is null',
+    expected_result=0,
+    dag=dag
+)
+
+run_time_quality_checks = DataQualityOperator(
+    task_id='Run_data_quality_checks',
+    redshift_conn_id='redshift',
+    test_sql='select count(*) from time where start_time is null',
     expected_result=0,
     dag=dag
 )
@@ -131,11 +155,14 @@ load_songplays_table >> load_song_dimension_table
 load_songplays_table >> load_artist_dimension_table
 load_songplays_table >> load_time_dimension_table
 
-load_user_dimension_table >> run_quality_checks
-load_song_dimension_table >> run_quality_checks
-load_artist_dimension_table >> run_quality_checks
-load_time_dimension_table >> run_quality_checks
+load_user_dimension_table >> run_user_quality_checks
+load_song_dimension_table >> run_song_quality_checks
+load_artist_dimension_table >> run_artist_quality_checks
+load_time_dimension_table >> run_time_quality_checks
 
-run_quality_checks >> end_operator 
+run_user_quality_checks >> end_operator 
+run_song_quality_checks >> end_operator 
+run_artist_quality_checks >> end_operator 
+run_time_quality_checks >> end_operator 
 
 
