@@ -22,7 +22,7 @@ AWS_SECRET = config.get('AWS','SECRET')
 default_args = {
     'owner': 'ljia-ch',
     'denpends_on_past': False,
-    'email':['ljia24338@gmail.com']
+    'email':['ljia24338@gmail.com'],
     'email_on_failure'：False,
     'start_date': datetime(2019, 1, 12),
     'retries': 3,
