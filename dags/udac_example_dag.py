@@ -31,7 +31,7 @@ default_args = {
 
 dag = DAG('sparkify_airflow_proj_dag',
           default_args=default_args,
-          description='Load data from S3 and transform in Redshift with Airflow',
+          description='Load data from S3 and transform to Redshift with Airflow',
           schedule_interval='0 * * * *'
         )
 
