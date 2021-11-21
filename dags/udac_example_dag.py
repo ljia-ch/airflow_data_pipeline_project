@@ -3,6 +3,8 @@ import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 
+from airflow.operators import PostgresOperator
+
 from operators import (StageToRedshiftOperator, LoadFactOperator,
                                 LoadDimensionOperator, DataQualityOperator)
 # from operators.stage_redshift import StageToRedshiftOperator
@@ -23,7 +25,7 @@ default_args = {
     'owner': 'ljia-ch',
     'denpends_on_past': False,
     'email':['ljia24338@gmail.com'],
-    'email_on_failure'：False,
+    'email_on_failure': False,
     'start_date': datetime(2019, 1, 12),
     'retries': 3,
     'retry_delay': timedelta(minutes=5)
