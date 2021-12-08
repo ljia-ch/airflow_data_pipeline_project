@@ -10,7 +10,7 @@ class LoadFactOperator(BaseOperator):
     
     Parameters
     redshift_conn_id:    AWS redshift connection id 
-    table:        Fact table name
+    table:               Fact table name
     query_name:          Query name to use in sql_queries
 
     
@@ -32,7 +32,7 @@ class LoadFactOperator(BaseOperator):
 
     def execute(self, context):
         
-        self.log.info('LoadFactOperator not implemented start')
+        self.log.info('LoadFactOperator implemented start')
         
         # Prepare SQL query to load data
         self.log.info("Prepare load data from staging table to {} fact table".format(self.target_table))
@@ -40,7 +40,7 @@ class LoadFactOperator(BaseOperator):
         
         self.log.info("Loading data into fact tables - songplays")
         table_insert_sql = """
-            INSERT INTO {self.target_table}
+            INSERT INTO {self.table}
             {self.query_name}
         """
         redshift_hook.run(table_insert_sql)

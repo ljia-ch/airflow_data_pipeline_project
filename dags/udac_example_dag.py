@@ -3,14 +3,11 @@ import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 
-from airflow.operators import PostgresOperator
+#from airflow.operators import PostgresOperator
+from airflow.providers.postgres.operators.postgres import PostgresOperator
 
 from operators import (StageToRedshiftOperator, LoadFactOperator,
                                 LoadDimensionOperator, DataQualityOperator)
-# from operators.stage_redshift import StageToRedshiftOperator
-# from operators.load_fact import LoadFactOperator
-# from operators.load_dimension import LoadDimensionOperator
-# from operators.data_quality import DataQualityOperator
 
 from helpers import SqlQueries
 import configparser
@@ -75,7 +72,7 @@ load_songplays_table = LoadFactOperator(
     task_id='Load_songplays_fact_table',
     redshift_conn_id='redshift',
     table='songplays',
-    sql_name=SqlQueries.songplay_table_insert,
+    query_name=SqlQueries.songplay_table_insert,
     dag=dag
 )
 
@@ -112,7 +109,7 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 run_song_quality_checks = DataQualityOperator(
-    task_id='Run_data_quality_checks',
+    task_id='Run_song_data_quality_checks',
     redshift_conn_id='redshift',
     test_sql='select count(*) from songs where songid is null',
     expected_result=0,
@@ -120,7 +117,7 @@ run_song_quality_checks = DataQualityOperator(
 )
 
 run_user_quality_checks = DataQualityOperator(
-    task_id='Run_data_quality_checks',
+    task_id='Run_user_data_quality_checks',
     redshift_conn_id='redshift',
     test_sql='select count(*) from users where userid is null',
     expected_result=0,
@@ -128,7 +125,7 @@ run_user_quality_checks = DataQualityOperator(
 )
 
 run_artist_quality_checks = DataQualityOperator(
-    task_id='Run_data_quality_checks',
+    task_id='Run_artist_data_quality_checks',
     redshift_conn_id='redshift',
     test_sql='select count(*) from artists where artistid is null',
     expected_result=0,
@@ -136,7 +133,7 @@ run_artist_quality_checks = DataQualityOperator(
 )
 
 run_time_quality_checks = DataQualityOperator(
-    task_id='Run_data_quality_checks',
+    task_id='Run_time_data_quality_checks',
     redshift_conn_id='redshift',
     test_sql='select count(*) from time where start_time is null',
     expected_result=0,
